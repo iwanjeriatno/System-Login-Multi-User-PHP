@@ -1,0 +1,17 @@
+#header {
+  background-color: black;
+  height: 150px;
+  width: 100%;
+  text-align: center;
+}
+
+#header h1{
+  color: white;
+  text-align: center;
+  padding-top: 30px;
+}
+
+#header a, a:active, a:hover {
+  color: white;
+  text-align: center;
+}

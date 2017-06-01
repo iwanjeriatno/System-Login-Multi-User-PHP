@@ -6,25 +6,52 @@
     </head>
     <body>
         <?php
-            include_once 'ConnectDB.php';
+            include_once 'koneksi.php';
 
             session_start();
 
-            $sql   = "SELECT username, password FROM users";
-            $hasil = $connect->query($sql);
-            $data  = $hasil->fetch_object();
+              if(isset($_POST['login'])) {
+                
+                $username_dari_form     = $_POST['username'];
+                $password_dari_form     = $_POST['password'];
 
-            if(isset($_POST['login'])) {
-                $username = $_POST['username'];
-                $password = $_POST['password'];
+                $sql   = "SELECT * FROM users WHERE username='$username_dari_form' AND password='$password_dari_form' ";
+                $hasil = $koneksi->query($sql);
+                $data  = $hasil->fetch_object();
 
-                if($username == $data->username && $password == $data->password) {
-                    $_SESSION['username'] =  $username;
+                $username_dari_database = $data->username;
+                $password_dari_database = $data->password;
+                $status_dari_database   = $data->status;
 
-                    header('Location: home.php');
+                if($username_dari_form == $username_dari_database && $password_dari_form == $password_dari_database) {
+
+                  if($status_dari_database == 'admin' ) {
+                    $_SESSION['admin']       = $username_dari_database;
+
+                    header('Location: admin/dashboard.php');
+                  }
+
+                  elseif($status_dari_database == 'user1' ) {
+                    $_SESSION['user1']       = $username_dari_database;
+
+                    header('Location: user1/index.php');
+                  }
+
+                  elseif($status_dari_database == 'user2' ) {
+                    $_SESSION['user2']       = $username_dari_database;
+
+                    header('Location: user2/index.php');
+                  }
+
+                  else {
+                    header('Location: index.php');
+                  }
+
                 }
-
-            }
+                else {
+                  header('Location: index.php');
+                }
+              }
 
          ?>
 
@@ -35,4 +62,4 @@
         </form>
 
     </body>
-</html>
+  </html>
